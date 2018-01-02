@@ -1,0 +1,5 @@
+name: MusicPlayer
+main: de.selebrator.plugin.musicplayer.MusicPlayerPlugin
+version: 1.0.0-beta
+authors: [Selebrator]
+depend: [WorldEdit, WorldGuard, WGRegionEvents]
