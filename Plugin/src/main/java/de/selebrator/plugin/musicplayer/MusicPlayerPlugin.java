@@ -1,9 +1,8 @@
 package de.selebrator.plugin.musicplayer;
 
-import com.mewin.WGRegionEvents.events.RegionEvent;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.selebrator.plugin.musicplayer.event.*;
+import de.selebrator.plugin.musicplayer.eventlistener.WGRegionEventListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -92,6 +91,8 @@ public class MusicPlayerPlugin extends JavaPlugin implements org.bukkit.event.Li
 		}
 
 		Bukkit.getPluginManager().registerEvents(this, this);
+		if(Bukkit.getPluginManager().isPluginEnabled("WGRegionEvents"))
+			Bukkit.getPluginManager().registerEvents(new WGRegionEventListener(this), this);
 		worldGuard = (WorldGuardPlugin) getServer().getPluginManager().getPlugin("WorldGuard");
 		instance = this;
 	}
@@ -117,17 +118,6 @@ public class MusicPlayerPlugin extends JavaPlugin implements org.bukkit.event.Li
 	}
 
 	@EventHandler
-	public void onRegionEvent(RegionEvent event) {
-		ProtectedRegion region = event.getRegion();
-		ContextBuilder cb = ContextBuilder.defaults(event.getPlayer())
-				.append(event)
-				.append("event_region", region)
-				.append("event_region_name", region.getId());
-
-		onEvent(event, cb.getContext());
-	}
-
-	@EventHandler
 	public void onSilence(SilenceEvent event) {
 		onEvent(event, ContextBuilder.defaults(event.getPlayer()).getContext());
 	}
@@ -140,7 +130,7 @@ public class MusicPlayerPlugin extends JavaPlugin implements org.bukkit.event.Li
 			Bukkit.getPluginManager().callEvent(new SilenceEvent(event.getPlayer()));
 	}
 
-	private void onEvent(PlayerEvent bukkitEvent, Map<String, Object> context) {
+	public void onEvent(PlayerEvent bukkitEvent, Map<String, Object> context) {
 		finer("Triggered " + bukkitEvent.getEventName() + ".");
 		List<Listener> listeners = this.config.eventRegistry.getOrDefault(bukkitEvent.getEventName(), Collections.emptyList());
 		finer("Found " + listeners.size() + " listeners: " + listeners.toString() + ".");
