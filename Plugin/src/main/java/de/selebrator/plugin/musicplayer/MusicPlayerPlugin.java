@@ -1,6 +1,7 @@
 package de.selebrator.plugin.musicplayer;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import de.selebrator.plugin.musicplayer.command.ReloadConfigCommand;
 import de.selebrator.plugin.musicplayer.event.*;
 import de.selebrator.plugin.musicplayer.eventlistener.WGRegionEventListener;
 import org.bukkit.Bukkit;
@@ -81,20 +82,27 @@ public class MusicPlayerPlugin extends JavaPlugin implements org.bukkit.event.Li
 
 	@Override
 	public void onEnable() {
-		try {
-			Path path = Paths.get(this.getDataFolder().getAbsolutePath() + "/config.json");
-			this.config = Config.load(path);
-		} catch(IOException e) {
-			this.getLogger().severe("Missing config.json");
-			Bukkit.getPluginManager().disablePlugin(this);
-			return;
-		}
+		if(!loadConfiguration()) return;
+
+		this.getCommand("musicplayerreload").setExecutor(new ReloadConfigCommand(this));
 
 		Bukkit.getPluginManager().registerEvents(this, this);
 		if(Bukkit.getPluginManager().isPluginEnabled("WGRegionEvents"))
 			Bukkit.getPluginManager().registerEvents(new WGRegionEventListener(this), this);
 		worldGuard = (WorldGuardPlugin) getServer().getPluginManager().getPlugin("WorldGuard");
 		instance = this;
+	}
+
+	public boolean loadConfiguration() {
+		try {
+			Path path = Paths.get(this.getDataFolder().getAbsolutePath() + "/config.json");
+			this.config = Config.load(path);
+			return true;
+		} catch(IOException e) {
+			this.getLogger().severe("Missing config.json");
+			Bukkit.getPluginManager().disablePlugin(this);
+			return false;
+		}
 	}
 
 	@Override

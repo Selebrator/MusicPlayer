@@ -4,3 +4,12 @@ version: 1.0.0-beta
 authors: [Selebrator]
 depend: [WorldEdit, WorldGuard]
 softdepend: [WGRegionEvents]
+commands:
+  musicplayerreload:
+    aliases: [mprl]
+    description: Reload configuration file of MusicPlayer
+    usage: /<command>
+    permission: musicplayer.reload
+permissions:
+  musicplaye.reload:
+    description: Reload the configuration file
