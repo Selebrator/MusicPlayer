@@ -11,5 +11,5 @@ commands:
     usage: /<command>
     permission: musicplayer.reload
 permissions:
-  musicplaye.reload:
+  musicplayer.reload:
     description: Reload the configuration file
