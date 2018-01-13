@@ -1,4 +1,4 @@
-package de.selebrator.plugin.musicplayer;
+package de.selebrator.musicplayer;
 
 public class PrioritizedCondition extends Condition {
 	public static final long DEFAULT_PRIORITY = 0L;

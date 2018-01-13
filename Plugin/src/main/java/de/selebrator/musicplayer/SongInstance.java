@@ -1,6 +1,6 @@
-package de.selebrator.plugin.musicplayer;
+package de.selebrator.musicplayer;
 
-import de.selebrator.plugin.musicplayer.event.SongEndEvent;
+import de.selebrator.musicplayer.event.SongEndEvent;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.*;

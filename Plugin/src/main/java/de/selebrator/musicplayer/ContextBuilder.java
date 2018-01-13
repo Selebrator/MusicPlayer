@@ -1,4 +1,4 @@
-package de.selebrator.plugin.musicplayer;
+package de.selebrator.musicplayer;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.*;

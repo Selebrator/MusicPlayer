@@ -1,9 +1,9 @@
-package de.selebrator.plugin.musicplayer;
+package de.selebrator.musicplayer;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import de.selebrator.plugin.musicplayer.command.ReloadConfigCommand;
-import de.selebrator.plugin.musicplayer.event.*;
-import de.selebrator.plugin.musicplayer.eventlistener.WGRegionEventListener;
+import de.selebrator.musicplayer.command.ReloadConfigCommand;
+import de.selebrator.musicplayer.event.*;
+import de.selebrator.musicplayer.eventlistener.WGRegionEventListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

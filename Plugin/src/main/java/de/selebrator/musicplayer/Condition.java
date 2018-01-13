@@ -1,4 +1,4 @@
-package de.selebrator.plugin.musicplayer;
+package de.selebrator.musicplayer;
 
 import org.mvel2.MVEL;
 

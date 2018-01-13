@@ -1,4 +1,4 @@
-package de.selebrator.plugin.musicplayer.event;
+package de.selebrator.musicplayer.event;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;

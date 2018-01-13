@@ -1,6 +1,6 @@
-package de.selebrator.plugin.musicplayer.command;
+package de.selebrator.musicplayer.command;
 
-import de.selebrator.plugin.musicplayer.MusicPlayerPlugin;
+import de.selebrator.musicplayer.MusicPlayerPlugin;
 import org.bukkit.command.*;
 
 public class ReloadConfigCommand implements CommandExecutor {

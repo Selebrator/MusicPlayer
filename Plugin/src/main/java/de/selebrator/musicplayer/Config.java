@@ -1,4 +1,4 @@
-package de.selebrator.plugin.musicplayer;
+package de.selebrator.musicplayer;
 
 import com.google.gson.Gson;
 

@@ -1,8 +1,8 @@
-package de.selebrator.plugin.musicplayer.eventlistener;
+package de.selebrator.musicplayer.eventlistener;
 
 import com.mewin.WGRegionEvents.events.RegionEvent;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import de.selebrator.plugin.musicplayer.*;
+import de.selebrator.musicplayer.*;
 import org.bukkit.event.*;
 import org.bukkit.event.Listener;
 
