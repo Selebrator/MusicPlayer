@@ -132,6 +132,10 @@ public class MusicPlayerPlugin extends JavaPlugin implements org.bukkit.event.Li
 
 	@EventHandler
 	public void onSongEnd(SongEndEvent event) {
+		if(!event.getPlayer().isOnline()) {
+			this.currentSongs.remove(event.getPlayer());
+			return;
+		}
 		this.prepareCache(event.getPlayer());
 		this.currentSongs.get(event.getPlayer()).remove(event.getSongInstance());
 		if(this.currentSongs.get(event.getPlayer()).isEmpty())
