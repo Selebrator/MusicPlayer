@@ -1,6 +1,6 @@
-name: MusicPlayer
-main: de.selebrator.plugin.musicplayer.MusicPlayerPlugin
-version: 1.1.2-beta
+name: ${project.name}
+main: de.selebrator.musicplayer.MusicPlayerPlugin
+version: ${project.version}
 authors: [Selebrator]
 depend: [WorldEdit, WorldGuard]
 softdepend: [WGRegionEvents]
