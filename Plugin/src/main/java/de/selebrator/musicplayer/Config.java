@@ -14,6 +14,7 @@ public class Config {
 
 	public static final Level DEFAULT_LOG_LEVEL = Level.INFO;
 
+	public Map<String, Map<String, String>> context = new HashMap<>();
 	private Map<String, Song> songs = new HashMap<>();
 	private Map<String, Listener> listeners = new HashMap<>();
 	public Map<String, List<Listener>> eventRegistry;

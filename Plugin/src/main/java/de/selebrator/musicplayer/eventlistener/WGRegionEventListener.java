@@ -16,12 +16,6 @@ public class WGRegionEventListener implements Listener {
 
 	@EventHandler
 	public void onRegionEvent(RegionEvent event) {
-		ProtectedRegion region = event.getRegion();
-		ContextBuilder cb = ContextBuilder.defaults(event.getPlayer())
-				.append(event)
-				.append("event_region", region)
-				.append("event_region_name", region.getId());
-
-		this.plugin.onEvent(event, cb.getContext());
+		this.plugin.onEvent(event);
 	}
 }

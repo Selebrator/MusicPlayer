@@ -1,14 +1,16 @@
 package de.selebrator.musicplayer;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.selebrator.musicplayer.command.ReloadConfigCommand;
 import de.selebrator.musicplayer.event.*;
 import de.selebrator.musicplayer.eventlistener.WGRegionEventListener;
-import org.bukkit.Bukkit;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
+import org.bukkit.event.*;
 import org.bukkit.event.player.*;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mvel2.MVEL;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -80,6 +82,30 @@ public class MusicPlayerPlugin extends JavaPlugin implements org.bukkit.event.Li
 		return Optional.ofNullable(maxPlayablePrioritySongs.get(ThreadLocalRandom.current().nextInt(0, maxPlayablePrioritySongs.size())));
 	}
 
+	public Map<String, Object> createContext(PlayerEvent event) {
+		Player player = event.getPlayer();
+		Location location = player.getLocation();
+		Set<ProtectedRegion> regions = MusicPlayerPlugin.worldGuard.getRegionManager(location.getWorld()).getApplicableRegions(location).getRegions();
+		List<String> regions_names = regions.stream().map(ProtectedRegion::getId).collect(Collectors.toList());
+
+		//the variables used to create the context
+		Map<String, Object> contextVars = new HashMap<>(2);
+		contextVars.put("event", event);
+		contextVars.put("regions_names", regions_names);
+
+		Map<String, Object> context = new HashMap<>();
+		for(Class clazz = event.getClass(); !clazz.equals(Event.class); clazz = clazz.getSuperclass()) {
+			Map<String, Object> subContext = new HashMap<>();
+			if(!this.config.context.containsKey(clazz.getSimpleName()))
+				continue;
+
+			this.config.context.get(clazz.getSimpleName()).forEach((var, condition) -> subContext.put(var, MVEL.eval(condition, contextVars)));
+			context.putAll(subContext);
+		}
+
+		return context;
+	}
+
 	@Override
 	public void onEnable() {
 		if(!loadConfiguration()) return;
@@ -118,16 +144,12 @@ public class MusicPlayerPlugin extends JavaPlugin implements org.bukkit.event.Li
 	//events
 	@EventHandler
 	public void onWorldChange(PlayerChangedWorldEvent event) {
-		ContextBuilder cb = ContextBuilder.defaults(event.getPlayer())
-				.append(event)
-				.append(event.getFrom(), "event_from");
-
-		onEvent(event, cb.getContext());
+		onEvent(event);
 	}
 
 	@EventHandler
 	public void onSilence(SilenceEvent event) {
-		onEvent(event, ContextBuilder.defaults(event.getPlayer()).getContext());
+		onEvent(event);
 	}
 
 	@EventHandler
@@ -142,7 +164,8 @@ public class MusicPlayerPlugin extends JavaPlugin implements org.bukkit.event.Li
 			Bukkit.getPluginManager().callEvent(new SilenceEvent(event.getPlayer()));
 	}
 
-	public void onEvent(PlayerEvent bukkitEvent, Map<String, Object> context) {
+	public void onEvent(PlayerEvent bukkitEvent) {
+		Map<String, Object> context = createContext(bukkitEvent);
 		finer("Triggered " + bukkitEvent.getEventName() + ".");
 		List<Listener> listeners = this.config.eventRegistry.getOrDefault(bukkitEvent.getEventName(), Collections.emptyList());
 		finer("Found " + listeners.size() + " listeners: " + listeners.toString() + ".");
