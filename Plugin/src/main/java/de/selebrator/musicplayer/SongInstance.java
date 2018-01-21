@@ -41,6 +41,8 @@ public class SongInstance {
 		this.outOfRangeTask = new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(location.getWorld() != player.getLocation().getWorld())
+					cancel();
 				if(location.distance(player.getLocation()) > 63)
 					stop(false);
 			}
