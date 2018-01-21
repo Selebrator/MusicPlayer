@@ -120,12 +120,20 @@ public class MusicPlayerPlugin extends JavaPlugin implements org.bukkit.event.Li
 	}
 
 	public boolean loadConfiguration() {
+		Path path = Paths.get(this.getDataFolder().getAbsolutePath() + "/config.json");
+		if(Files.notExists(path)) {
+			this.getLogger().info("Missing config.json. Creating default.");
+			try {
+				Files.copy(MusicPlayerPlugin.class.getResourceAsStream("/config.json"), path);
+			} catch(IOException e) {
+				this.getLogger().info("Could not load default config.");
+			}
+		}
 		try {
-			Path path = Paths.get(this.getDataFolder().getAbsolutePath() + "/config.json");
 			this.config = Config.load(path);
 			return true;
 		} catch(IOException e) {
-			this.getLogger().severe("Missing config.json");
+			this.getLogger().severe("Could not load config.");
 			Bukkit.getPluginManager().disablePlugin(this);
 			return false;
 		}

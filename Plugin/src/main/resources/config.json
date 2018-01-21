@@ -1,0 +1,98 @@
+{
+  "log_level": 500,
+  "context": {
+    "PlayerEvent": {
+      "event": "event",
+	  "player": "event.getPlayer()",
+      "player_name": "event.getPlayer().getName()",
+      "player_getName": "event.getPlayer().getHealth()",
+      "world": "event.getPlayer().getWorld()",
+      "world_name": "event.getPlayer().getWorld().getName()",
+      "world_time": "event.getPlayer().getWorld().getTime()",
+      "world_dimension": "event.getPlayer().getWorld().getEnvironment()",
+      "world_type": "event.getPlayer().getWorld().getWorldType()",
+      "world_hasStorm": "event.getPlayer().getWorld().hasStorm()",
+      "world_isThundering": "event.getPlayer().getWorld().isThundering()",
+      "world_isNightTime": "13000 < event.getPlayer().getWorld().getTime() && event.getPlayer().getWorld().getTime() <= 23000",
+      "world_isDayTime": "!(13000 < event.getPlayer().getWorld().getTime() && event.getPlayer().getWorld().getTime() <= 23000)",
+      "location_regions_names": "regions_names"
+    },
+    "RegionEvent": {
+      "event_region": "event.getRegion()",
+      "event_region_name": "event.getRegion().getId()"
+    },
+    "PlayerChangedWorldEvent": {
+      "event_from": "event.getFrom()",
+      "event_from_name": "event.getFrom().getName()",
+      "event_from_time": "event.getFrom().getTime()",
+      "event_from_dimension": "event.getFrom().getEnvironment()",
+      "event_from_type": "event.getFrom().getWorldType()",
+      "event_from_hasStorm": "event.getFrom().hasStorm()",
+      "event_from_isThundering": "event.getFrom().isThundering()",
+      "event_from_isNightTime": "13000 < event.getFrom().getTime() && event.getFrom().getTime() <= 23000",
+      "event_from_isDayTime": "!(13000 < event.getFrom().getTime() && event.getFrom().getTime() <= 23000)"
+    }
+  },
+  "listeners": {
+    "default": {
+      "type": "SilenceEvent",
+      "songs": [
+        "main_bg_day",
+        "main_bg_night"
+      ]
+    },
+    "enter_nether": {
+      "type": "PlayerChangedWorldEvent",
+      "condition": "world_dimension == \"NETHER\"",
+      "priority": 100,
+      "songs": [
+        "nether_enter"
+      ]
+    },
+    "spawn_enter": {
+      "type": "RegionEnteredEvent",
+      "condition": "event_region_name == \"spawn\"",
+      "priority": 10,
+      "songs": [
+        "spawn_enter"
+      ]
+    },
+    "spawn_bg": {
+      "type": "SilenceEvent",
+      "condition": "location_regions_names.contains(\"spawn\")",
+      "priority": 5,
+      "songs": [
+        "spawn_bg"
+      ]
+    }
+  },
+  "songs": {
+    "main_bg_day": {
+      "condition": "world_isDayTime",
+      "priority": 1,
+      "sound": "music.bg.day",
+      "category": "MUSIC",
+      "duration": "PT10S"
+    },
+    "main_bg_night": {
+      "condition": "world_isNightTime",
+      "priority": 1,
+      "sound": "main.bg.night",
+      "category": "MUSIC",
+      "duration": "PT1M23S"
+    },
+    "spawn_enter": {
+      "priority": 3,
+      "sound": "spawn.crows",
+      "category": "MUSIC",
+      "ticks": 83
+    },
+    "spawn_bg": {
+      "condition": "location_regions_names.contains(\"spawn\")",
+      "priority": 4,
+      "sound": "spawn.bg",
+      "category": "MUSIC",
+      "duration": "PT3M44S"
+    }
+  }
+}
