@@ -124,9 +124,11 @@ public class MusicPlayerPlugin extends JavaPlugin implements org.bukkit.event.Li
 		if(Files.notExists(path)) {
 			this.getLogger().info("Missing config.json. Creating default.");
 			try {
+				//noinspection ResultOfMethodCallIgnored
+				this.getDataFolder().mkdir();
 				Files.copy(MusicPlayerPlugin.class.getResourceAsStream("/config.json"), path);
 			} catch(IOException e) {
-				this.getLogger().info("Could not load default config.");
+				this.getLogger().info("Could not copy default config.");
 			}
 		}
 		try {
